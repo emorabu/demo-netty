@@ -1,4 +1,4 @@
-package com.sumika.netty.example;
+package com.sumika.netty.http;
 
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.channel.ChannelFuture;
@@ -9,6 +9,15 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
 public class TestServer {
 	/**
 	 * 启动该类, curl 'http://localhost:8899' 返回 hello world
+	 * 推荐使用 curl 来测试, 因为部分浏览器(如 chrome) 会多发送一个请求(favicon.ico)
+	 * 
+	 * 建立 netty 服务端的过程：
+	 * 	定义两个事件循环组
+	 * 	定义服务端
+	 * 	服务端绑定事件循环组, 事件处理器
+	 * 		事件处理器中向管道添加 netty 和开发者编写的 handler
+	 * 			自定义的 handler 需要重写相应的回调方法
+	 *	服务端绑定端口启动 
 	 * @param args
 	 * @throws InterruptedException
 	 */
