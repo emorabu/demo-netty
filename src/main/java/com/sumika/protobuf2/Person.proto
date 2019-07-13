@@ -1,0 +1,15 @@
+syntax = "proto2";
+
+package com.sumika.protobuf2;
+
+option optimize_for = SPEED; // 优化: SPEED(默认) 加快解析速度
+option java_package = "com.sumika.protobuf2";
+option java_outer_classname = "PersonInfo";
+
+message Person{
+    required string name = 1;
+    optional int32 age = 2;
+    optional string address = 3;
+}
+
+// protoc --java_out=src\main\java\ src\main\java\com\sumika\protobuf2\Person.proto 
