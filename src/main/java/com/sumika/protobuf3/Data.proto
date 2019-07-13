@@ -1,0 +1,44 @@
+syntax = "proto2";
+
+package com.sumika.protobuf3;
+
+option optimize_for = SPEED; // 优化: SPEED(默认) 加快解析速度
+option java_package = "com.sumika.protobuf3";
+option java_outer_classname = "DataInfo";
+
+message Data{
+    enum DataType{
+        PersonType = 1;
+        AnimalType = 2;
+        PlantType = 3;
+    }
+
+    required DataType data_type = 1;
+
+    /*
+     * 一个 message 中有多个可选项, 而同一时间最多只设置一个字段, 可以使用 oneof 强制这种行为并且节省空间
+     * oneof 中所有字段会共享内存, 当设置了其中一个字段后会自动清除其他字段, 后设置的字段会覆盖之前设置的字段
+     */
+    oneof dataBody{
+        Person person = 2; // 这里的2与 data_type 是同一级
+        Animal animal = 3;
+        Plant plant = 4;
+    }
+
+}
+message Person{
+    required string name = 1;
+    optional int32 age = 2;
+    optional string address = 3;
+}
+message Animal{
+    required string name = 1;
+    optional string color = 2;
+}
+message Plant{
+    required string name = 1;
+    optional string address = 2;
+}
+
+
+// protoc --java_out=src\main\java\ src\main\java\com\sumika\protobuf3\Data.proto 
