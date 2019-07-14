@@ -15,12 +15,12 @@ public class ThriftServer {
 		TNonblockingServerSocket socket = new TNonblockingServerSocket(8899);
 		THsHaServer.Args arg = new THsHaServer.Args(socket).minWorkerThreads(2).maxWorkerThreads(4);
 		PersonService.Processor<PersonServiceImpl> processor = new PersonService.Processor<PersonServiceImpl>(new PersonServiceImpl());
-		
-		arg.protocolFactory(new TCompactProtocol.Factory());
-		arg.transportFactory(new TFramedTransport.Factory());
+		// 下面的协议和传输对象都有多种选择, 但都必须与客户端的协议和传输对象对应
+		arg.protocolFactory(new TCompactProtocol.Factory()); // TCompactProtocol 协议层, 二进制压缩
+		arg.transportFactory(new TFramedTransport.Factory()); // TFramedTransport 传输层, 更偏底层
 		arg.processorFactory(new TProcessorFactory(processor));
 		
-		TServer server = new THsHaServer(arg);
+		TServer server = new THsHaServer(arg); // THsHaServer 半同步半异步
 		server.serve();
 		
 		/**
